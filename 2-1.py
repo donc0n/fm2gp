@@ -2,7 +2,7 @@ def addition_chain(N):
     chains = [[] for i in range(N+1)] # chains[i] 는 i를 최소의 addition횟수로 구할 수 있는 chain들의 리스트이다.
     chains[1] = [[1]]
     for i, r in enumerate(chains):
-        level = 100
+        level = N # INF
         # 가능한 chains[i]들 중에서 가장 짧은 chain의 길이를 구한다.
         for j in range(i//2, 0, -1): # i-j > j
             for sub in chains[i-j]:
