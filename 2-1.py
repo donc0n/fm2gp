@@ -3,12 +3,12 @@ def addition_chain(N):
     chains[1] = [[1]]
     for i, r in enumerate(chains):
         level = 100
-        # 레벨의 최솟값을 구한다.
+        # 가능한 chains[i]들 중에서 가장 짧은 chain의 길이를 구한다.
         for j in range(i//2, 0, -1): # i-j > j
             for sub in chains[i-j]:
                 if j in sub:
                     level = min(len(sub), level)
-        # 최소 레벨의 경로를 갱신한다.
+        # 최소 길이의 chain들을 chains[i]에 추가한다.
         for j in range(i//2, 0, -1):
             for sub in chains[i-j]:
                 if len(sub) == level and j in sub:
@@ -28,3 +28,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
