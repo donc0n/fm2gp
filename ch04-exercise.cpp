@@ -27,7 +27,7 @@ std::pair<integer, line_segment> quotient_remainder_fibonacci(line_segment a, li
 
 
 int main(void) {
-	// excercise 4.7
+	// exercise 4.7
 	int a, b;
 	std::cout << "input a, b: ";
 	std::cin >> a;
