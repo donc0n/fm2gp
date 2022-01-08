@@ -1,6 +1,6 @@
  # fm2gp
- ## 알고리즘 산책: 수학에서 제네릭 프로그래밍까지 연습문제 풀이 (From Mathematics to Generic Programming Exercise) 
-
+ ## 알고리즘 산책: 수학에서 제네릭 프로그래밍까지 연습문제 풀이  
+ ### From Mathematics to Generic Programming Exercise  
 참고링크  
 >&nbsp;&nbsp;2, 3장: https://donc0n.blogspot.com/2022/01/fm2gp-23.html  
 >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4장: https://donc0n.blogspot.com/2022/01/fm2gp-4.html  
