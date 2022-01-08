@@ -32,7 +32,7 @@ N pi(I first, N n) {
 
 
 int main(void) {
-	// exercies 3.2
+	// exercise 3.2
 	int limit = 100000;
 	bool t1(0); uint8_t t2(0); uint16_t t3(0); uint32_t t4(0); uint64_t t5(0);
 	sift_test(t1, limit);
@@ -41,7 +41,7 @@ int main(void) {
 	sift_test(t4, limit);
 	sift_test(t5, limit);
 	
-	// exercies 3.3
+	// exercise 3.3
 	std::vector<int> v(500);
 	sift(begin(v), 500);
 	int tmp;
