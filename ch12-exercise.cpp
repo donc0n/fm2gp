@@ -1,0 +1,125 @@
+#include <iostream>
+#include <time.h>
+#include <random>
+#include "ch12.h"
+
+using namespace std;
+
+
+template<Integer N>
+N rand_max(N max) { 
+	N digit(0);
+	while (max) {
+		max = max >> 1;
+		digit++;
+	}
+	srand((unsigned)time(NULL));
+	N ret(0);
+	while(digit >= 15) {
+		ret = ret << 15 | rand();
+		digit -= 15;
+	}
+	ret = (ret << digit) | int((rand()%(2 << digit)));
+	return ret;
+}
+
+
+template<Integer N>
+void gcd_test(N max) {
+	clock_t start, end;
+	clock_t timer1(0), timer2(0);
+	
+	for (int i = 0; i < 100000; i++) {
+		N a = rand_max(max);
+		N b = rand_max(max);
+		start = clock();
+		stein_gcd(a, b);
+		end = clock();
+		timer1 += (end - start);
+		start = clock();
+		gcd(a, b);
+		end = clock();
+		timer2 += (end - start);
+	}
+	cout << "stein_gcd: " << timer1 << "ms ";
+	cout << "euclidian_gcd: " << timer2 << "ms";
+	cout << "  [0, " << max << ")\n";
+}
+
+
+template <BinaryInteger N>
+std::pair<N, N> extended_stein_gcd(N p, N q) {
+	if (p < N(0)) p = -p;
+	if (q < N(0)) q = -q;
+	if (p == N(0)) return { q, 1 };
+	if (q == N(0)) return { p, 1 };
+
+	// p > 0 && q > 0
+	int shift = 0;
+	while (even(p) && even(q)) { p >>= 1; q >>= 1; ++shift; }
+
+	N p0 = p, q0 = q;
+	N sp = 1, sq = 0; // sp * p_0 + sq * q_0 = p
+	N tp = 0, tq = 1; // tp * p_0 + tq * q_0 = q
+
+	while (even(p)) {
+		if (!(even(sp) && even(sq))) {
+			sp -= q0;
+			sq += p0;
+		}
+		p >>= 1;
+		sp >>= 1;
+		sq >>= 1;
+	}
+
+	// odd(p)
+	while (q != N(0)) {
+		while (even(q)) {
+			if (!(even(tp) && even(tq))) {
+				tp -= q0;
+				tq += p0;
+			}
+			q >>= 1;
+			tp >>= 1;
+			tq >>= 1;
+		}
+		if (p > q) {
+			std::swap(q, p);
+			std::swap(tp, sp);
+			std::swap(tq, sq);
+		}
+		q -= p;
+		tp -= sp;
+		tq -= sq;	
+	}
+
+	// p == q
+	return { sp, p << shift }; // sp*(p_0*k) + sq*(q_0*k) = r' * k
+}
+
+
+template <BinaryInteger N>
+void extended_stein_gcd_test(N p, N q) {
+	auto x = extended_gcd(p, q);
+	auto y = (x.second - p * x.first) / q;
+	cout << "extended_gcd: " << p << " * (" << x.first << ") + " << q << " * (" << y << ") = " << x.first * p + y * q << endl;
+	x = extended_stein_gcd(p, q);
+	y = (x.second - p * x.first) / q;
+	cout << "extended_stein_gcd: " << p << " * (" << x.first << ") + " << q << " * (" << y << ") = " << x.first * p + y * q << endl;
+	cout << endl;
+}
+
+
+int main() {
+	// exercise 12.1
+	cout << "TEST START ...\n";
+	gcd_test(INT16_MAX); // 2^15
+	gcd_test(INT32_MAX); // 2^31
+	gcd_test(INT64_MAX); // 2^63
+	cout << endl;
+
+	// exercise 12.7
+	extended_stein_gcd_test(121, 66);
+	extended_stein_gcd_test(196, 42);
+	extended_stein_gcd_test(253, 161);
+}
