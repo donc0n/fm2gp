@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <time.h>
 #include <random>
 #include "ch12.h"
@@ -6,32 +7,25 @@
 using namespace std;
 
 
-template<Integer N>
-N rand_max(N max) { 
-	N digit(0);
-	while (max) {
-		max = max >> 1;
-		digit++;
-	}
+long long int rand_digit(int digit) {
 	srand((unsigned)time(NULL));
-	N ret(0);
-	while(digit >= 15) {
+	long long int ret(0);
+	while (digit >= 15) {
 		ret = ret << 15 | rand();
 		digit -= 15;
 	}
-	ret = (ret << digit) | int((rand()%(2 << digit)));
+	ret = (ret << digit) | int((rand() % (2 << digit)));
 	return ret;
 }
 
 
-template<Integer N>
-void gcd_test(N max) {
+void gcd_test(int digit) {
 	clock_t start, end;
 	clock_t timer1(0), timer2(0);
-	
-	for (int i = 0; i < 100000; i++) {
-		N a = rand_max(max);
-		N b = rand_max(max);
+
+	for (int i = 0; i < 1000000; i++) {
+		long long int a = rand_digit(digit);
+		long long int b = rand_digit(digit);
 		start = clock();
 		stein_gcd(a, b);
 		end = clock();
@@ -43,7 +37,7 @@ void gcd_test(N max) {
 	}
 	cout << "stein_gcd: " << timer1 << "ms ";
 	cout << "euclidian_gcd: " << timer2 << "ms";
-	cout << "  [0, " << max << ")\n";
+	cout << "  [0, " << pow(2, digit-1) << ")\n";
 }
 
 
@@ -90,7 +84,7 @@ std::pair<N, N> extended_stein_gcd(N p, N q) {
 		}
 		q -= p;
 		tp -= sp;
-		tq -= sq;	
+		tq -= sq;
 	}
 
 	// p == q
@@ -113,9 +107,9 @@ void extended_stein_gcd_test(N p, N q) {
 int main() {
 	// exercise 12.1
 	cout << "TEST START ...\n";
-	gcd_test(INT16_MAX); // 2^15
-	gcd_test(INT32_MAX); // 2^31
-	gcd_test(INT64_MAX); // 2^63
+	gcd_test(16); // 2^15
+	gcd_test(32); // 2^31
+	gcd_test(64); // 2^63
 	cout << endl;
 
 	// exercise 12.7
