@@ -6,13 +6,15 @@
 
 using namespace std;
 
+int counter = 0;
 
 long long int rand_digit(int digit) {
-	srand((unsigned)time(NULL));
 	long long int ret(0);
 	while (digit >= 15) {
+		srand((unsigned)time(NULL)+counter);
 		ret = ret << 15 | rand();
 		digit -= 15;
+		counter += 1;
 	}
 	ret = (ret << digit) | int((rand() % (2 << digit)));
 	return ret;
@@ -23,7 +25,7 @@ void gcd_test(int digit) {
 	clock_t start, end;
 	clock_t timer1(0), timer2(0);
 
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 300000; i++) {
 		long long int a = rand_digit(digit);
 		long long int b = rand_digit(digit);
 		start = clock();
@@ -37,7 +39,7 @@ void gcd_test(int digit) {
 	}
 	cout << "stein_gcd: " << timer1 << "ms ";
 	cout << "euclidian_gcd: " << timer2 << "ms";
-	cout << "  [0, " << pow(2, digit-1) << ")\n";
+	cout << "  [0, " << pow(2, digit) << ")\n";
 }
 
 
@@ -107,9 +109,9 @@ void extended_stein_gcd_test(N p, N q) {
 int main() {
 	// exercise 12.1
 	cout << "TEST START ...\n";
-	gcd_test(16); // 2^15
-	gcd_test(32); // 2^31
-	gcd_test(64); // 2^63
+	gcd_test(15); // 2^15
+	gcd_test(31); // 2^31
+	gcd_test(63); // 2^63
 	cout << endl;
 
 	// exercise 12.7
